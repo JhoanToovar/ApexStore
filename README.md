@@ -37,24 +37,33 @@ Para comprobar la conexión sin modificar nada:
 
 ## Arranque
 
-Cada nodo tiene un script en la raíz: `.bat` para Windows y `.sh` para Linux, macOS o Git Bash. Cada script compila su módulo, se sitúa en la raíz y arranca el nodo con su `config`. Abra una terminal por nodo y respete el orden **4 → 3 → 2 → 1**.
+Los scripts de arranque están en `scripts/`: `.bat` para Windows y `.sh` para Linux, macOS o Git Bash. Cada script compila su módulo, se sitúa en la raíz y arranca el nodo con su `config`. Respete el orden **4 → 3 → 2 → 1**.
+
+Para levantar todo con un solo comando:
+
+- Windows: `.\scripts\levantar-todo.bat`
+- Linux o macOS: `./scripts/levantar-todo.sh`
+
+Windows abre una ventana por nodo y el menú del nodo 1 queda en la última. Linux o macOS deja los nodos 4, 3 y 2 en segundo plano con su log en `logs/`, y el menú del nodo 1 queda en la terminal; al salir con `0` se detienen los demás.
+
+Para levantar cada nodo a mano, abra una terminal por nodo:
 
 Windows:
 
 ```
-.\run-nodo4.bat     # terminal 1
-.\run-nodo3.bat     # terminal 2
-.\run-nodo2.bat     # terminal 3
-.\run-nodo1.bat     # terminal 4: menú de consola
+.\scripts\run-nodo4.bat     # terminal 1
+.\scripts\run-nodo3.bat     # terminal 2
+.\scripts\run-nodo2.bat     # terminal 3
+.\scripts\run-nodo1.bat     # terminal 4: menú de consola
 ```
 
 Linux o macOS:
 
 ```
-./run-nodo4.sh      # terminal 1
-./run-nodo3.sh      # terminal 2
-./run-nodo2.sh      # terminal 3
-./run-nodo1.sh      # terminal 4: menú de consola
+./scripts/run-nodo4.sh      # terminal 1
+./scripts/run-nodo3.sh      # terminal 2
+./scripts/run-nodo2.sh      # terminal 3
+./scripts/run-nodo1.sh      # terminal 4: menú de consola
 ```
 
 Si un nodo no está arriba, la consola muestra el error de conexión.
@@ -67,8 +76,8 @@ Escenarios por token: `tok_sim_ok`, `tok_sim_rechazado`, `tok_sim_fondos`, `tok_
 
 Con los cuatro nodos arriba, la entrada del menú está en `demo/demo-entrada.txt`.
 
-- Windows: `.\run-nodo1.bat < demo\demo-entrada.txt`
-- Linux o macOS: `./run-nodo1.sh < demo/demo-entrada.txt`
+- Windows: `.\scripts\run-nodo1.bat < demo\demo-entrada.txt`
+- Linux o macOS: `./scripts/run-nodo1.sh < demo/demo-entrada.txt`
 
 La demo paga con los tres medios, abre el breaker de PSE con tres `tok_sim_caido`, muestra que Stripe sigue funcionando, repite un pago con la misma clave y muestra `ConflictoIdempotencia` al cambiar el medio.
 
@@ -120,8 +129,8 @@ La suite automatizada no cubre la carga ni la concurrencia de stock.
 Nodo 2 escribe una línea `RAS02,orden,medio,repoMs,estrategiaMs,totalMs` por pago en su salida. El medidor necesita ese log en un archivo. Haga 10 pagos de calentamiento (no se cuentan) y 50 medidas, y calcula P50 y P95 por tramo. Por eso el log tiene que ser nuevo y tener al menos 60 líneas `RAS02`.
 
 1. Con Nodo 4 y Nodo 3 arriba, arranque Nodo 2 enviando su salida a un archivo:
-   - Windows (cmd): `.\run-nodo2.bat > nodo2.log 2>&1`
-   - Linux o macOS: `./run-nodo2.sh > nodo2.log 2>&1`
+   - Windows (cmd): `.\scripts\run-nodo2.bat > nodo2.log 2>&1`
+   - Linux o macOS: `./scripts/run-nodo2.sh > nodo2.log 2>&1`
 2. En otra terminal, ejecute el medidor:
    - Windows: `.\gradlew.bat :pruebas:medirRas02 --args='"servicioCheckout:tcp -h localhost -p 10003" nodo2.log medicion-ras02.csv'`
    - Linux o macOS: `./gradlew :pruebas:medirRas02 --args='"servicioCheckout:tcp -h localhost -p 10003" nodo2.log medicion-ras02.csv'`

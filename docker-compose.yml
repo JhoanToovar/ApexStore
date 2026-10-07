@@ -1,4 +1,4 @@
-# Solo PostgreSQL 16. Los nodos Java corren fuera de Docker con los scripts run-nodoX.
+# Solo PostgreSQL 16. Los nodos Java corren fuera de Docker con los scripts de scripts/ (run-nodoX o levantar-todo).
 # Credenciales y puerto salen de .env (DB_NOMBRE, DB_USUARIO, DB_PASSWORD, DB_PORT).
 services:
   postgres:
